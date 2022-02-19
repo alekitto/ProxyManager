@@ -14,7 +14,6 @@ use function substr;
 
 final class ClassNameInflector implements ClassNameInflectorInterface
 {
-    /** @var int @TODO annotation still needed for phpstan to understand this */
     private int $proxyMarkerLength;
     private string $proxyMarker;
     private ParameterHasher $parameterHasher;
@@ -41,11 +40,14 @@ final class ClassNameInflector implements ClassNameInflectorInterface
             return $className;
         }
 
-        /** @psalm-suppress LessSpecificReturnStatement */
+        /**
+         * @psalm-suppress LessSpecificReturnStatement
+         * @psalm-suppress PossiblyFalseOperand
+         */
         return substr(
             $className,
             $this->proxyMarkerLength + $position,
-            (int) strrpos($className, '\\') - ($position + $this->proxyMarkerLength)
+            strrpos($className, '\\') - ($position + $this->proxyMarkerLength)
         );
     }
 

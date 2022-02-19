@@ -50,4 +50,15 @@ final class MagicMethodGeneratorTest extends TestCase
 
         self::assertStringMatchesFormat('%Apublic function __set(%A', $magicMethod->generate());
     }
+
+    public function testGeneratesMethodPreserveCase(): void
+    {
+        $reflection = new ReflectionClass(EmptyClass::class);
+
+        $magicMethod = new MagicMethodGenerator($reflection, '__GeT', ['name']);
+        self::assertStringMatchesFormat('%Apublic function & __GeT(%A', $magicMethod->generate());
+
+        $magicMethod = new MagicMethodGenerator($reflection, '__sET', ['name']);
+        self::assertStringMatchesFormat('%Apublic function __sET(%A', $magicMethod->generate());
+    }
 }
