@@ -12,6 +12,7 @@ use ProxyManager\ProxyGenerator\AccessInterceptorScopeLocalizerGenerator;
 use ProxyManager\ProxyGenerator\ProxyGeneratorInterface;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 
 /**
@@ -36,7 +37,10 @@ final class AccessInterceptorScopeLocalizerTest extends AbstractProxyGeneratorTe
             $this->expectException(InvalidProxiedClassException::class);
         }
 
-        if ($reflectionClass->getName() === ClassWithMixedTypedProperties::class) {
+        if (
+            $reflectionClass->getName() === ClassWithMixedTypedProperties::class ||
+            $reflectionClass->getName() === ClassWithReadOnlyProperties::class
+        ) {
             $this->expectException(UnsupportedProxiedClassException::class);
         }
 

@@ -17,6 +17,8 @@ use function array_merge;
 use function array_values;
 use function assert;
 
+use const PHP_VERSION_ID;
+
 /**
  * DTO containing the list of all non-static proxy properties and utility methods to access them
  * in various formats/collections
@@ -62,6 +64,38 @@ final class Properties
         }
 
         return new self($properties);
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement - could not infer correct return type of PHP 8.1 isReadOnly method
+     * @psalm-suppress MixedInferredReturnType - could not infer correct return type of PHP 8.1 isReadOnly method
+     */
+    public function onlyNonReadOnlyProperties(): self
+    {
+        if (PHP_VERSION_ID < 80100) {
+            return $this;
+        }
+
+        return new self(array_filter(
+            $this->properties,
+            static fn (ReflectionProperty $property): bool => ! $property->isReadOnly()
+        ));
+    }
+
+    /**
+     * @psalm-suppress MixedReturnStatement - could not infer correct return type of PHP 8.1 isReadOnly method
+     * @psalm-suppress MixedInferredReturnType - could not infer correct return type of PHP 8.1 isReadOnly method
+     */
+    public function onlyReadOnlyProperties(): self
+    {
+        if (PHP_VERSION_ID < 80100) {
+            return new self([]);
+        }
+
+        return new self(array_filter(
+            $this->properties,
+            static fn (ReflectionProperty $property): bool => $property->isReadOnly(),
+        ));
     }
 
     public function onlyNonReferenceableProperties(): self
@@ -204,6 +238,23 @@ final class Properties
         $propertiesMap = [];
 
         foreach ($this->getPrivateProperties() as $property) {
+            $propertiesMap[$property->getDeclaringClass()->getName()][$property->getName()] = $property;
+        }
+
+        return $propertiesMap;
+    }
+
+    /**
+     * @return array<class-string, array<string, ReflectionProperty>> indexed by class name and property name
+     */
+    public function getGroupedReadOnlyAccessibleProperties(): array
+    {
+        $propertiesMap = [];
+        $properties    = $this
+            ->onlyReadOnlyProperties()
+            ->getAccessibleProperties();
+
+        foreach ($properties as $property) {
             $propertiesMap[$property->getDeclaringClass()->getName()][$property->getName()] = $property;
         }
 

@@ -13,12 +13,15 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 use ReflectionProperty;
 
 use function array_keys;
 use function array_map;
 use function array_values;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Util\Properties}
@@ -291,6 +294,119 @@ final class PropertiesTest extends TestCase
         );
     }
 
+    public function testOnlyNonReadOnlyProperties(): void
+    {
+        $nonReadOnlyProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithMixedReferenceableTypedProperties::class))
+                                           ->onlyNonReadOnlyProperties()
+                                           ->getInstanceProperties();
+
+        self::assertCount(39, $nonReadOnlyProperties);
+        self::assertSame(
+            [
+                'publicUnTypedProperty',
+                'publicBoolProperty',
+                'publicNullableBoolProperty',
+                'publicIntProperty',
+                'publicNullableIntProperty',
+                'publicFloatProperty',
+                'publicNullableFloatProperty',
+                'publicStringProperty',
+                'publicNullableStringProperty',
+                'publicArrayProperty',
+                'publicNullableArrayProperty',
+                'publicIterableProperty',
+                'publicNullableIterableProperty',
+                'protectedUnTypedProperty',
+                'protectedBoolProperty',
+                'protectedNullableBoolProperty',
+                'protectedIntProperty',
+                'protectedNullableIntProperty',
+                'protectedFloatProperty',
+                'protectedNullableFloatProperty',
+                'protectedStringProperty',
+                'protectedNullableStringProperty',
+                'protectedArrayProperty',
+                'protectedNullableArrayProperty',
+                'protectedIterableProperty',
+                'protectedNullableIterableProperty',
+                'privateUnTypedProperty',
+                'privateBoolProperty',
+                'privateNullableBoolProperty',
+                'privateIntProperty',
+                'privateNullableIntProperty',
+                'privateFloatProperty',
+                'privateNullableFloatProperty',
+                'privateStringProperty',
+                'privateNullableStringProperty',
+                'privateArrayProperty',
+                'privateNullableArrayProperty',
+                'privateIterableProperty',
+                'privateNullableIterableProperty',
+            ],
+            array_values(array_map(static fn (ReflectionProperty $property): string => $property->getName(), $nonReadOnlyProperties))
+        );
+    }
+
+    public function testOnlyReadOnlyProperties(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $readOnlyProperties = Properties::fromReflectionClass(new ReflectionClass(ClassWithReadOnlyProperties::class))
+                                        ->onlyReadOnlyProperties()
+                                        ->getInstanceProperties();
+
+        self::assertCount(42, $readOnlyProperties);
+        self::assertSame(
+            [
+                'publicMixedProperty',
+                'publicUnionProperty',
+                'publicBoolProperty',
+                'publicNullableBoolProperty',
+                'publicIntProperty',
+                'publicNullableIntProperty',
+                'publicFloatProperty',
+                'publicNullableFloatProperty',
+                'publicStringProperty',
+                'publicNullableStringProperty',
+                'publicArrayProperty',
+                'publicNullableArrayProperty',
+                'publicIterableProperty',
+                'publicNullableIterableProperty',
+                'protectedMixedProperty',
+                'protectedUnionProperty',
+                'protectedBoolProperty',
+                'protectedNullableBoolProperty',
+                'protectedIntProperty',
+                'protectedNullableIntProperty',
+                'protectedFloatProperty',
+                'protectedNullableFloatProperty',
+                'protectedStringProperty',
+                'protectedNullableStringProperty',
+                'protectedArrayProperty',
+                'protectedNullableArrayProperty',
+                'protectedIterableProperty',
+                'protectedNullableIterableProperty',
+                'privateMixedProperty',
+                'privateUnionProperty',
+                'privateBoolProperty',
+                'privateNullableBoolProperty',
+                'privateIntProperty',
+                'privateNullableIntProperty',
+                'privateFloatProperty',
+                'privateNullableFloatProperty',
+                'privateStringProperty',
+                'privateNullableStringProperty',
+                'privateArrayProperty',
+                'privateNullableArrayProperty',
+                'privateIterableProperty',
+                'privateNullableIterableProperty',
+            ],
+            array_values(array_map(static fn (ReflectionProperty $property): string => $property->getName(), $readOnlyProperties))
+        );
+    }
+
     public function testGetProtectedPropertiesSkipsAbstractMethods(): void
     {
         $properties = Properties::fromReflectionClass(new ReflectionClass(ClassWithAbstractProtectedMethod::class));
@@ -369,6 +485,51 @@ final class PropertiesTest extends TestCase
         self::assertArrayHasKey('privateProperty0', $group);
         self::assertArrayHasKey('privateProperty1', $group);
         self::assertArrayHasKey('privateProperty2', $group);
+    }
+
+    public function testGetGroupedReadOnlyAccessibleProperties(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $properties      = Properties::fromReflectionClass(new ReflectionClass(ClassWithReadOnlyProperties::class));
+        $groupedReadonly = $properties->getGroupedReadOnlyAccessibleProperties();
+
+        self::assertCount(1, $groupedReadonly);
+
+        $group = $groupedReadonly[ClassWithReadOnlyProperties::class];
+
+        self::assertCount(28, $group);
+
+        self::assertArrayHasKey('publicMixedProperty', $group);
+        self::assertArrayHasKey('publicUnionProperty', $group);
+        self::assertArrayHasKey('publicBoolProperty', $group);
+        self::assertArrayHasKey('publicNullableBoolProperty', $group);
+        self::assertArrayHasKey('publicIntProperty', $group);
+        self::assertArrayHasKey('publicNullableIntProperty', $group);
+        self::assertArrayHasKey('publicFloatProperty', $group);
+        self::assertArrayHasKey('publicNullableFloatProperty', $group);
+        self::assertArrayHasKey('publicStringProperty', $group);
+        self::assertArrayHasKey('publicNullableStringProperty', $group);
+        self::assertArrayHasKey('publicArrayProperty', $group);
+        self::assertArrayHasKey('publicNullableArrayProperty', $group);
+        self::assertArrayHasKey('publicIterableProperty', $group);
+        self::assertArrayHasKey('publicNullableIterableProperty', $group);
+        self::assertArrayHasKey('protectedMixedProperty', $group);
+        self::assertArrayHasKey('protectedUnionProperty', $group);
+        self::assertArrayHasKey('protectedBoolProperty', $group);
+        self::assertArrayHasKey('protectedNullableBoolProperty', $group);
+        self::assertArrayHasKey('protectedIntProperty', $group);
+        self::assertArrayHasKey('protectedNullableIntProperty', $group);
+        self::assertArrayHasKey('protectedFloatProperty', $group);
+        self::assertArrayHasKey('protectedNullableFloatProperty', $group);
+        self::assertArrayHasKey('protectedStringProperty', $group);
+        self::assertArrayHasKey('protectedNullableStringProperty', $group);
+        self::assertArrayHasKey('protectedArrayProperty', $group);
+        self::assertArrayHasKey('protectedNullableArrayProperty', $group);
+        self::assertArrayHasKey('protectedIterableProperty', $group);
+        self::assertArrayHasKey('protectedNullableIterableProperty', $group);
     }
 
     public function testGetGroupedPrivatePropertiesWithInheritedProperties(): void

@@ -18,6 +18,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ProxyManagerTestAsset\IterableMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ObjectMethodTypeHintedInterface;
 use ProxyManagerTestAsset\ReturnTypeHintedClass;
@@ -102,10 +103,11 @@ abstract class AbstractProxyGeneratorTest extends TestCase
             [VoidMethodTypeHintedInterface::class],
             [IterableMethodTypeHintedInterface::class],
             [ObjectMethodTypeHintedInterface::class],
+            [ClassWithPhp80TypedMethods::class],
         ];
 
-        if (PHP_VERSION_ID >= 80000) {
-            $implementations[] = [ClassWithPhp80TypedMethods::class];
+        if (PHP_VERSION_ID >= 80100) {
+            $implementations[] = [ClassWithReadOnlyProperties::class];
         }
 
         return $implementations;

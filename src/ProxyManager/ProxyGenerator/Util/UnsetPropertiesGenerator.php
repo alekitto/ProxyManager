@@ -8,6 +8,7 @@ use ReflectionClass;
 use ReflectionProperty;
 
 use function array_map;
+use function array_merge_recursive;
 use function assert;
 use function implode;
 use function reset;
@@ -33,7 +34,9 @@ PHP;
 
     private static function generateUnsetAccessiblePropertiesCode(Properties $properties, string $instanceName): string
     {
-        $accessibleProperties = $properties->getAccessibleProperties();
+        $accessibleProperties = $properties
+            ->onlyNonReadOnlyProperties()
+            ->getAccessibleProperties();
 
         if (! $accessibleProperties) {
             return '';
@@ -44,7 +47,10 @@ PHP;
 
     private static function generateUnsetPrivatePropertiesCode(Properties $properties, string $instanceName): string
     {
-        $groups = $properties->getGroupedPrivateProperties();
+        $groups = array_merge_recursive(
+            $properties->getGroupedPrivateProperties(),
+            $properties->getGroupedReadOnlyAccessibleProperties()
+        );
 
         if (! $groups) {
             return '';

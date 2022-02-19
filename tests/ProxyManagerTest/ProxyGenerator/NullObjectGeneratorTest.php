@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
+use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -75,6 +76,7 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
         foreach (
             Properties::fromReflectionClass($generatedReflection)
                 ->onlyNullableProperties()
+                ->onlyNonReadOnlyProperties()
                 ->getPublicProperties() as $property
         ) {
             /** @psalm-suppress MixedPropertyFetch */
@@ -121,10 +123,11 @@ final class NullObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedTypedProperties::class],
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
+            [ClassWithPhp80TypedMethods::class],
         ];
 
-        if (PHP_VERSION_ID >= 80000) {
-            $implementations[] = [ClassWithPhp80TypedMethods::class];
+        if (PHP_VERSION_ID >= 80100) {
+            $implementations[] = [ClassWithReadOnlyProperties::class];
         }
 
         return $implementations;
