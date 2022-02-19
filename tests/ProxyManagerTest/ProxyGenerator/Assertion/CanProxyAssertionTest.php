@@ -25,11 +25,14 @@ use ProxyManagerTestAsset\ClassWithPublicArrayProperty;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
 use ProxyManagerTestAsset\EmptyClass;
+use ProxyManagerTestAsset\EnumClass;
 use ProxyManagerTestAsset\FinalClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\LazyLoadingMock;
 use ProxyManagerTestAsset\NullObjectMock;
 use ReflectionClass;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\Assertion\CanProxyAssertion}
@@ -44,6 +47,17 @@ final class CanProxyAssertionTest extends TestCase
         $this->expectException(InvalidProxiedClassException::class);
 
         CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(FinalClass::class));
+    }
+
+    public function testDeniesEnumClasses(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $this->expectException(InvalidProxiedClassException::class);
+
+        CanProxyAssertion::assertClassCanBeProxied(new ReflectionClass(EnumClass::class));
     }
 
     public function testDeniesClassesWithAbstractProtectedMethods(): void

@@ -10,8 +10,11 @@ use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractProtectedMethod;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithProtectedMethod;
+use ProxyManagerTestAsset\EnumClass;
 use ProxyManagerTestAsset\FinalClass;
 use ReflectionClass;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\Exception\InvalidProxiedClassException}
@@ -37,6 +40,20 @@ final class InvalidProxiedClassExceptionTest extends TestCase
             'Provided class "ProxyManagerTestAsset\FinalClass" is final and cannot be proxied',
             InvalidProxiedClassException::finalClassNotSupported(
                 new ReflectionClass(FinalClass::class)
+            )->getMessage()
+        );
+    }
+
+    public function testEnumClassNotSupported(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        self::assertSame(
+            'Provided class "ProxyManagerTestAsset\EnumClass" is an enum and cannot be proxied',
+            InvalidProxiedClassException::enumClassNotSupported(
+                new ReflectionClass(EnumClass::class)
             )->getMessage()
         );
     }

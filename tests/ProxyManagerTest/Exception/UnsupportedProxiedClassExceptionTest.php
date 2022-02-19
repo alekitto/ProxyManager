@@ -8,9 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ProxyManager\Exception\UnsupportedProxiedClassException;
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
-use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ReflectionClass;
-use ReflectionProperty;
 
 /**
  * Tests for {@see \ProxyManager\Exception\UnsupportedProxiedClassException}
@@ -20,17 +18,6 @@ use ReflectionProperty;
  */
 final class UnsupportedProxiedClassExceptionTest extends TestCase
 {
-    public function testUnsupportedLocalizedReflectionProperty(): void
-    {
-        self::assertSame(
-            'Provided reflection property "property0" of class "' . ClassWithPrivateProperties::class
-            . '" is private and cannot be localized in PHP 5.3',
-            UnsupportedProxiedClassException::unsupportedLocalizedReflectionProperty(
-                new ReflectionProperty(ClassWithPrivateProperties::class, 'property0')
-            )->getMessage()
-        );
-    }
-
     public function testNonReferenceableLocalizedReflectionProperties(): void
     {
         $reflectionClass = new ReflectionClass(ClassWithMixedTypedProperties::class);

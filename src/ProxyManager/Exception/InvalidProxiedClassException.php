@@ -28,6 +28,11 @@ class InvalidProxiedClassException extends InvalidArgumentException implements E
         return new self(sprintf('Provided class "%s" is final and cannot be proxied', $reflection->getName()));
     }
 
+    public static function enumClassNotSupported(ReflectionClass $reflection): self
+    {
+        return new self(sprintf('Provided class "%s" is an enum and cannot be proxied', $reflection->getName()));
+    }
+
     public static function abstractProtectedMethodsNotSupported(ReflectionClass $reflection): self
     {
         return new self(sprintf(

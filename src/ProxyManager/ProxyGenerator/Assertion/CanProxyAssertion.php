@@ -8,8 +8,11 @@ use BadMethodCallException;
 use ProxyManager\Exception\InvalidProxiedClassException;
 use ReflectionClass;
 use ReflectionMethod;
+use UnitEnum;
 
 use function array_filter;
+
+use const PHP_VERSION_ID;
 
 /**
  * Assertion that verifies that a class can be proxied
@@ -32,6 +35,7 @@ final class CanProxyAssertion
     public static function assertClassCanBeProxied(ReflectionClass $originalClass, bool $allowInterfaces = true): void
     {
         self::isNotFinal($originalClass);
+        self::isNotEnum($originalClass);
         self::hasNoAbstractProtectedMethods($originalClass);
 
         if ($allowInterfaces) {
@@ -48,6 +52,20 @@ final class CanProxyAssertion
     {
         if ($originalClass->isFinal()) {
             throw InvalidProxiedClassException::finalClassNotSupported($originalClass);
+        }
+    }
+
+    /**
+     * @throws InvalidProxiedClassException
+     */
+    private static function isNotEnum(ReflectionClass $originalClass): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            return;
+        }
+
+        if ($originalClass->isSubclassOf(UnitEnum::class)) {
+            throw InvalidProxiedClassException::enumClassNotSupported($originalClass);
         }
     }
 
