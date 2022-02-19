@@ -19,6 +19,7 @@ use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPhp80TypedMethods;
 use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ReflectionClass;
 
 use function array_diff;
@@ -93,6 +94,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
             [ClassWithMixedReferenceableTypedProperties::class],
             [BaseInterface::class],
             [ClassWithPhp80TypedMethods::class],
+            [ClassWithUnionTypedProperties::class],
         ];
 
         if (PHP_VERSION_ID >= 80100) {

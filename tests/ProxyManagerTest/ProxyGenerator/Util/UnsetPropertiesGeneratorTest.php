@@ -11,6 +11,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ReflectionClass;
 
@@ -96,6 +97,19 @@ unset($bar->publicUnTypedProperty, $bar->publicUnTypedPropertyWithoutDefaultValu
 \Closure::bind(function (\ProxyManagerTestAsset\ClassWithMixedTypedProperties $instance) {
     unset($instance->privateUnTypedProperty, $instance->privateUnTypedPropertyWithoutDefaultValue, $instance->privateBoolProperty, $instance->privateBoolPropertyWithoutDefaultValue, $instance->privateNullableBoolProperty, $instance->privateNullableBoolPropertyWithoutDefaultValue, $instance->privateIntProperty, $instance->privateIntPropertyWithoutDefaultValue, $instance->privateNullableIntProperty, $instance->privateNullableIntPropertyWithoutDefaultValue, $instance->privateFloatProperty, $instance->privateFloatPropertyWithoutDefaultValue, $instance->privateNullableFloatProperty, $instance->privateNullableFloatPropertyWithoutDefaultValue, $instance->privateStringProperty, $instance->privateStringPropertyWithoutDefaultValue, $instance->privateNullableStringProperty, $instance->privateNullableStringPropertyWithoutDefaultValue, $instance->privateArrayProperty, $instance->privateArrayPropertyWithoutDefaultValue, $instance->privateNullableArrayProperty, $instance->privateNullableArrayPropertyWithoutDefaultValue, $instance->privateIterableProperty, $instance->privateIterablePropertyWithoutDefaultValue, $instance->privateNullableIterableProperty, $instance->privateNullableIterablePropertyWithoutDefaultValue, $instance->privateObjectProperty, $instance->privateNullableObjectProperty, $instance->privateClassProperty, $instance->privateNullableClassProperty);
 }, $bar, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties')->__invoke($bar);
+
+
+PHP,
+                'bar',
+            ],
+            ClassWithUnionTypedProperties::class => [
+                ClassWithUnionTypedProperties::class,
+                <<<'PHP'
+unset($bar->publicUnionProperty, $bar->publicNullableUnionProperty, $bar->protectedUnionProperty, $bar->protectedNullableUnionProperty);
+
+\Closure::bind(function (\ProxyManagerTestAsset\ClassWithUnionTypedProperties $instance) {
+    unset($instance->privateUnionProperty, $instance->privateNullableUnionProperty);
+}, $bar, 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties')->__invoke($bar);
 
 
 PHP,

@@ -10,6 +10,7 @@ use ProxyManager\ProxyGenerator\LazyLoadingGhost\MethodGenerator\CallInitializer
 use ProxyManager\ProxyGenerator\Util\Properties;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ReflectionClass;
 
 /**
@@ -287,6 +288,71 @@ $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties ?? $cacheFetchPro
 }, $this, 'ProxyManagerTestAsset\\ClassWithMixedTypedProperties');
 
 $cacheFetchProxyManagerTestAsset_ClassWithMixedTypedProperties($this, $properties);
+
+$result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
+$this->track = false;
+
+return $result;
+PHP;
+
+        self::assertSame(
+            $expectedCode,
+            $callInitializer->getBody()
+        );
+    }
+
+    public function testBodyStructureWithUnionTypedProperties(): void
+    {
+        $initializer           = $this->createMock(PropertyGenerator::class);
+        $initializationTracker = $this->createMock(PropertyGenerator::class);
+
+        $initializer->method('getName')->willReturn('init');
+        $initializationTracker->method('getName')->willReturn('track');
+
+        $callInitializer = new CallInitializer(
+            $initializer,
+            $initializationTracker,
+            Properties::fromReflectionClass(new ReflectionClass(ClassWithUnionTypedProperties::class))
+        );
+
+        $expectedCode = <<<'PHP'
+if ($this->track || ! $this->init) {
+    return;
+}
+
+$this->track = true;
+
+$this->publicUnionProperty = 'publicUnionProperty';
+$this->publicNullableUnionProperty = 'publicUnionProperty';
+$this->protectedUnionProperty = 'protectedUnionProperty';
+$this->protectedNullableUnionProperty = 'protectedUnionProperty';
+static $cacheProxyManagerTestAsset_ClassWithUnionTypedProperties;
+
+$cacheProxyManagerTestAsset_ClassWithUnionTypedProperties ?? $cacheProxyManagerTestAsset_ClassWithUnionTypedProperties = \Closure::bind(static function ($instance) {
+    $instance->privateUnionProperty = 'privateUnionProperty';
+    $instance->privateNullableUnionProperty = 'privateUnionProperty';
+}, null, 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties');
+
+$cacheProxyManagerTestAsset_ClassWithUnionTypedProperties($this);
+
+
+
+
+$properties = [
+    'publicUnionProperty' => & $this->publicUnionProperty,
+    'publicNullableUnionProperty' => & $this->publicNullableUnionProperty,
+    '' . "\0" . '*' . "\0" . 'protectedUnionProperty' => & $this->protectedUnionProperty,
+    '' . "\0" . '*' . "\0" . 'protectedNullableUnionProperty' => & $this->protectedNullableUnionProperty,
+];
+
+static $cacheFetchProxyManagerTestAsset_ClassWithUnionTypedProperties;
+
+$cacheFetchProxyManagerTestAsset_ClassWithUnionTypedProperties ?? $cacheFetchProxyManagerTestAsset_ClassWithUnionTypedProperties = \Closure::bind(function ($instance, array & $properties) {
+    $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties' . "\0" . 'privateUnionProperty'] = & $instance->privateUnionProperty;
+    $properties['' . "\0" . 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties' . "\0" . 'privateNullableUnionProperty'] = & $instance->privateNullableUnionProperty;
+}, $this, 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties');
+
+$cacheFetchProxyManagerTestAsset_ClassWithUnionTypedProperties($this, $properties);
 
 $result = $this->init->__invoke($this, $methodName, $parameters, $this->init, $properties);
 $this->track = false;

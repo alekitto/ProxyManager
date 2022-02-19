@@ -12,6 +12,7 @@ use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
 use ProxyManagerTestAsset\ClassWithProtectedProperties;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ReflectionClass;
 
 /**
@@ -303,6 +304,40 @@ $this->protectedNullableIterableProperty = & $localizedObject->protectedNullable
 \Closure::bind(function () use ($localizedObject) {
     $this->privateNullableIterableProperty = & $localizedObject->privateNullableIterableProperty;
 }, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
+
+$this->pre = $prefixInterceptors;
+$this->post = $suffixInterceptors;
+PHP
+            ,
+            $method->getBody()
+        );
+    }
+
+    public function testBodyStructureWithUnionTypedProperties(): void
+    {
+        $method = new BindProxyProperties(
+            new ReflectionClass(ClassWithUnionTypedProperties::class),
+            $this->prefixInterceptors,
+            $this->suffixInterceptors
+        );
+
+        self::assertSame(
+            <<<'PHP'
+$this->publicUnionProperty = & $localizedObject->publicUnionProperty;
+
+$this->publicNullableUnionProperty = & $localizedObject->publicNullableUnionProperty;
+
+$this->protectedUnionProperty = & $localizedObject->protectedUnionProperty;
+
+$this->protectedNullableUnionProperty = & $localizedObject->protectedNullableUnionProperty;
+
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateUnionProperty = & $localizedObject->privateUnionProperty;
+}, $this, 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties')->__invoke();
+
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateNullableUnionProperty = & $localizedObject->privateNullableUnionProperty;
+}, $this, 'ProxyManagerTestAsset\\ClassWithUnionTypedProperties')->__invoke();
 
 $this->pre = $prefixInterceptors;
 $this->post = $suffixInterceptors;

@@ -9,6 +9,7 @@ use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\StaticProxyConstructo
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedTypedProperties;
 use ProxyManagerTestAsset\ClassWithPrivateProperties;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ReflectionClass;
 
 /**
@@ -97,6 +98,28 @@ $instance->publicNullableIterableProperty = null;
 $instance->publicNullableIterablePropertyWithoutDefaultValue = null;
 $instance->publicNullableObjectProperty = null;
 $instance->publicNullableClassProperty = null;
+
+return $instance;',
+            $constructor->getBody()
+        );
+    }
+
+    public function testBodyStructureWithUnionTypedProperties(): void
+    {
+        $constructor = new StaticProxyConstructor(new ReflectionClass(ClassWithUnionTypedProperties::class));
+
+        self::assertSame('staticProxyConstructor', $constructor->getName());
+        self::assertSame(ClassWithUnionTypedProperties::class, (string) $constructor->getReturnType());
+        self::assertTrue($constructor->isStatic());
+        self::assertSame('public', $constructor->getVisibility());
+        self::assertCount(0, $constructor->getParameters());
+        self::assertSame(
+            'static $reflection;
+
+$reflection = $reflection ?? new \ReflectionClass(__CLASS__);
+$instance   = $reflection->newInstanceWithoutConstructor();
+
+$instance->publicNullableUnionProperty = null;
 
 return $instance;',
             $constructor->getBody()

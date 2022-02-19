@@ -27,6 +27,7 @@ use ProxyManagerTestAsset\ClassWithProtectedProperties;
 use ProxyManagerTestAsset\ClassWithPublicProperties;
 use ProxyManagerTestAsset\ClassWithReadOnlyProperties;
 use ProxyManagerTestAsset\ClassWithSelfHint;
+use ProxyManagerTestAsset\ClassWithUnionTypedProperties;
 use ProxyManagerTestAsset\EmptyClass;
 use ProxyManagerTestAsset\HydratedObject;
 use ProxyManagerTestAsset\IterableTypeHintClass;
@@ -116,6 +117,7 @@ final class MultipleProxyGenerationTest extends TestCase
             [new ClassWithPrivateProperties()],
             [new ClassWithProtectedProperties()],
             [new ClassWithPublicProperties()],
+            [new ClassWithUnionTypedProperties()],
             [new EmptyClass()],
             [new HydratedObject()],
             [new ClassWithSelfHint()],
