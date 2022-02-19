@@ -300,10 +300,11 @@ final class PropertiesTest extends TestCase
                                            ->onlyNonReadOnlyProperties()
                                            ->getInstanceProperties();
 
-        self::assertCount(39, $nonReadOnlyProperties);
+        self::assertCount(42, $nonReadOnlyProperties);
         self::assertSame(
             [
                 'publicUnTypedProperty',
+                'publicMixedProperty',
                 'publicBoolProperty',
                 'publicNullableBoolProperty',
                 'publicIntProperty',
@@ -317,6 +318,7 @@ final class PropertiesTest extends TestCase
                 'publicIterableProperty',
                 'publicNullableIterableProperty',
                 'protectedUnTypedProperty',
+                'protectedMixedProperty',
                 'protectedBoolProperty',
                 'protectedNullableBoolProperty',
                 'protectedIntProperty',
@@ -330,6 +332,7 @@ final class PropertiesTest extends TestCase
                 'protectedIterableProperty',
                 'protectedNullableIterableProperty',
                 'privateUnTypedProperty',
+                'privateMixedProperty',
                 'privateBoolProperty',
                 'privateNullableBoolProperty',
                 'privateIntProperty',

@@ -203,6 +203,8 @@ $this->post = $suffixInterceptors;',
             <<<'PHP'
 $this->publicUnTypedProperty = & $localizedObject->publicUnTypedProperty;
 
+$this->publicMixedProperty = & $localizedObject->publicMixedProperty;
+
 $this->publicBoolProperty = & $localizedObject->publicBoolProperty;
 
 $this->publicNullableBoolProperty = & $localizedObject->publicNullableBoolProperty;
@@ -228,6 +230,8 @@ $this->publicIterableProperty = & $localizedObject->publicIterableProperty;
 $this->publicNullableIterableProperty = & $localizedObject->publicNullableIterableProperty;
 
 $this->protectedUnTypedProperty = & $localizedObject->protectedUnTypedProperty;
+
+$this->protectedMixedProperty = & $localizedObject->protectedMixedProperty;
 
 $this->protectedBoolProperty = & $localizedObject->protectedBoolProperty;
 
@@ -255,6 +259,10 @@ $this->protectedNullableIterableProperty = & $localizedObject->protectedNullable
 
 \Closure::bind(function () use ($localizedObject) {
     $this->privateUnTypedProperty = & $localizedObject->privateUnTypedProperty;
+}, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
+
+\Closure::bind(function () use ($localizedObject) {
+    $this->privateMixedProperty = & $localizedObject->privateMixedProperty;
 }, $this, 'ProxyManagerTestAsset\\ClassWithMixedReferenceableTypedProperties')->__invoke();
 
 \Closure::bind(function () use ($localizedObject) {

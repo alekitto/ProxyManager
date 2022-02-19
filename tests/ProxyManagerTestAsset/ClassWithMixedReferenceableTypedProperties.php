@@ -14,6 +14,8 @@ class ClassWithMixedReferenceableTypedProperties
 {
     public static $publicStaticUnTypedProperty =  'publicStaticUnTypedProperty';
     public static $publicStaticUnTypedPropertyWithoutDefaultValue;
+    public static mixed $publicStaticMixedProperty =  'publicStaticMixedProperty';
+    public static mixed $publicStaticMixedPropertyWithoutDefaultValue;
     public static bool $publicStaticBoolProperty =  true;
     public static bool $publicStaticBoolPropertyWithoutDefaultValue;
     public static ?bool $publicStaticNullableBoolProperty =  true;
@@ -45,6 +47,8 @@ class ClassWithMixedReferenceableTypedProperties
 
     protected static $protectedStaticUnTypedProperty =  'protectedStaticUnTypedProperty';
     protected static $protectedStaticUnTypedPropertyWithoutDefaultValue;
+    protected static mixed $protectedStaticMixedProperty =  'protectedStaticMixedProperty';
+    protected static mixed $protectedStaticMixedPropertyWithoutDefaultValue;
     protected static bool $protectedStaticBoolProperty =  true;
     protected static bool $protectedStaticBoolPropertyWithoutDefaultValue;
     protected static ?bool $protectedStaticNullableBoolProperty =  true;
@@ -76,6 +80,8 @@ class ClassWithMixedReferenceableTypedProperties
 
     private static $privateStaticUnTypedProperty =  'privateStaticUnTypedProperty';
     private static $privateStaticUnTypedPropertyWithoutDefaultValue;
+    private static mixed $privateStaticMixedProperty =  'privateStaticMixedProperty';
+    private static mixed $privateStaticMixedPropertyWithoutDefaultValue;
     private static bool $privateStaticBoolProperty =  true;
     private static bool $privateStaticBoolPropertyWithoutDefaultValue;
     private static ?bool $privateStaticNullableBoolProperty =  true;
@@ -106,6 +112,7 @@ class ClassWithMixedReferenceableTypedProperties
     private static ?EmptyClass $privateStaticNullableClassProperty;
 
     public $publicUnTypedProperty =  'publicUnTypedProperty';
+    public mixed $publicMixedProperty =  'publicMixedProperty';
     public bool $publicBoolProperty =  true;
     public ?bool $publicNullableBoolProperty =  true;
     public int $publicIntProperty =  123;
@@ -120,6 +127,7 @@ class ClassWithMixedReferenceableTypedProperties
     public ?iterable $publicNullableIterableProperty =  ['publicIterableProperty'];
 
     protected $protectedUnTypedProperty =  'protectedUnTypedProperty';
+    protected mixed $protectedMixedProperty =  'protectedMixedProperty';
     protected bool $protectedBoolProperty =  true;
     protected ?bool $protectedNullableBoolProperty =  true;
     protected int $protectedIntProperty =  123;
@@ -134,6 +142,7 @@ class ClassWithMixedReferenceableTypedProperties
     protected ?iterable $protectedNullableIterableProperty =  ['protectedIterableProperty'];
 
     private $privateUnTypedProperty =  'privateUnTypedProperty';
+    private mixed $privateMixedProperty =  'privateMixedProperty';
     private bool $privateBoolProperty =  true;
     private ?bool $privateNullableBoolProperty =  true;
     private int $privateIntProperty =  123;
