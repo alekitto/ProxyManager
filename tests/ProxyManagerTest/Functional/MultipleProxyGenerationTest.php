@@ -14,6 +14,7 @@ use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
 use ProxyManagerTestAsset\ClassWithCollidingPrivateInheritedProperties;
 use ProxyManagerTestAsset\ClassWithFinalMagicMethods;
 use ProxyManagerTestAsset\ClassWithFinalMethods;
+use ProxyManagerTestAsset\ClassWithIntersectionTypes;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMethodWithByRefVariadicFunction;
 use ProxyManagerTestAsset\ClassWithMethodWithVariadicFunction;
@@ -72,7 +73,8 @@ final class MultipleProxyGenerationTest extends TestCase
 
         if (
             $className !== ClassWithMixedTypedProperties::class &&
-            $className !== ClassWithReadOnlyProperties::class
+            $className !== ClassWithReadOnlyProperties::class &&
+            $className !== ClassWithIntersectionTypes::class
         ) {
             $generated[] = $accessInterceptorScopeLocalizerFactory->createProxy($object);
         }
@@ -135,6 +137,7 @@ final class MultipleProxyGenerationTest extends TestCase
 
         if (PHP_VERSION_ID >= 80100) {
             $tests[] = [new ClassWithReadOnlyProperties()];
+            $tests[] = [new ClassWithIntersectionTypes()];
         }
 
         return $tests;

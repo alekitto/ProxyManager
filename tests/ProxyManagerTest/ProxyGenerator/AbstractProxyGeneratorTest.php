@@ -13,6 +13,7 @@ use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithAbstractPublicMethod;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithIntersectionTypes;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
@@ -110,6 +111,7 @@ abstract class AbstractProxyGeneratorTest extends TestCase
 
         if (PHP_VERSION_ID >= 80100) {
             $implementations[] = [ClassWithReadOnlyProperties::class];
+            $implementations[] = [ClassWithIntersectionTypes::class];
         }
 
         return $implementations;

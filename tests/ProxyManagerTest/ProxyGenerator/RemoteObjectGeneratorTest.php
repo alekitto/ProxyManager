@@ -13,6 +13,7 @@ use ProxyManager\ProxyGenerator\RemoteObjectGenerator;
 use ProxyManagerTestAsset\BaseClass;
 use ProxyManagerTestAsset\BaseInterface;
 use ProxyManagerTestAsset\ClassWithByRefMagicMethods;
+use ProxyManagerTestAsset\ClassWithIntersectionTypes;
 use ProxyManagerTestAsset\ClassWithMagicMethods;
 use ProxyManagerTestAsset\ClassWithMixedProperties;
 use ProxyManagerTestAsset\ClassWithMixedReferenceableTypedProperties;
@@ -99,6 +100,7 @@ final class RemoteObjectGeneratorTest extends AbstractProxyGeneratorTest
 
         if (PHP_VERSION_ID >= 80100) {
             $implementations[] = [ClassWithReadOnlyProperties::class];
+            $implementations[] = [ClassWithIntersectionTypes::class];
         }
 
         return $implementations;
