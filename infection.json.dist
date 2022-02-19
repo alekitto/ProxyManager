@@ -11,6 +11,13 @@
             "badge": "master"
         }
     },
+    "mutators": {
+        "@default": true,
+        "global-ignoreSourceCodeByRegex": [
+            "assert\\(.*\\);",
+            "if \\(PHP_VERSION_ID.*\\).*"
+        ]
+    },
     "minMsi": 84,
     "minCoveredMsi": 89.7
 }

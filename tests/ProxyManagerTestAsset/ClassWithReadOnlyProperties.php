@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace ProxyManagerTestAsset;
 
-use stdClass;
-
 /**
  * Base test class to play around with mixed visibility readonly properties with different type definitions
  */

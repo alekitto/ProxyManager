@@ -9,7 +9,8 @@ use Closure;
 /**
  * Access interceptor object marker
  *
- * @psalm-template InterceptedObjectType of object
+ * @template InterceptedObjectType of object
+ * @extends ProxyInterface<InterceptedObjectType>
  */
 interface AccessInterceptorInterface extends ProxyInterface
 {

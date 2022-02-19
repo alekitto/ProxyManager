@@ -32,7 +32,7 @@ class NullObjectFactory extends AbstractBaseFactory
      * @param object|string $instanceOrClassName the object to be wrapped or interface to transform to null object
      * @psalm-param RealObjectType|class-string<RealObjectType> $instanceOrClassName
      *
-     * @psalm-return RealObjectType&NullObjectInterface
+     * @psalm-return RealObjectType&NullObjectInterface<RealObjectType>
      *
      * @throws InvalidSignatureException
      * @throws MissingSignatureException

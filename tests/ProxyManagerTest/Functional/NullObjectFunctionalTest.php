@@ -56,12 +56,15 @@ final class NullObjectFunctionalTest extends TestCase
 
     /**
      * @param mixed[] $params
-     * @psalm-param class-string $className
+     * @psalm-param class-string<T> $className
+     *
+     * @template T of object
      *
      * @dataProvider getProxyMethods
      */
     public function testMethodCallsAfterUnSerialization(string $className, string $method, array $params): void
     {
+        /** @psalm-var NullObjectInterface<T> $proxy */
         $proxy = unserialize(serialize((new NullObjectFactory())->createProxy($className)));
         assert($proxy instanceof NullObjectInterface);
 

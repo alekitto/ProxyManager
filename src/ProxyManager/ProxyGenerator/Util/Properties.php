@@ -69,6 +69,7 @@ final class Properties
     /**
      * @psalm-suppress MixedReturnStatement - could not infer correct return type of PHP 8.1 isReadOnly method
      * @psalm-suppress MixedInferredReturnType - could not infer correct return type of PHP 8.1 isReadOnly method
+     * @psalm-suppress UndefinedMethod - isReadOnly method is defined only in PHP 8.1
      */
     public function onlyNonReadOnlyProperties(): self
     {
@@ -85,6 +86,7 @@ final class Properties
     /**
      * @psalm-suppress MixedReturnStatement - could not infer correct return type of PHP 8.1 isReadOnly method
      * @psalm-suppress MixedInferredReturnType - could not infer correct return type of PHP 8.1 isReadOnly method
+     * @psalm-suppress UndefinedMethod - isReadOnly method is defined only in PHP 8.1
      */
     public function onlyReadOnlyProperties(): self
     {

@@ -7,7 +7,8 @@ namespace ProxyManager\Proxy;
 /**
  * Value holder marker
  *
- * @psalm-template WrappedValueHolderType of object
+ * @template WrappedValueHolderType of object
+ * @extends ProxyInterface<WrappedValueHolderType>
  */
 interface ValueHolderInterface extends ProxyInterface
 {

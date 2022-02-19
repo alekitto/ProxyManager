@@ -8,6 +8,9 @@ use Laminas\Code\Reflection\MethodReflection;
 use PHPUnit\Framework\TestCase;
 use ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor;
 use ProxyManagerTestAsset\BaseClass;
+use ProxyManagerTestAsset\NeverCounter;
+
+use const PHP_VERSION_ID;
 
 /**
  * Tests for {@see \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor}
@@ -55,5 +58,23 @@ final class NullObjectMethodInterceptorTest extends TestCase
         self::assertSame('publicByReferenceMethod', $method->getName());
         self::assertCount(0, $method->getParameters());
         self::assertStringMatchesFormat("\$ref%s = null;\nreturn \$ref%s;", $method->getBody());
+    }
+
+    /**
+     * @covers \ProxyManager\ProxyGenerator\NullObject\MethodGenerator\NullObjectMethodInterceptor
+     */
+    public function testBodyStructureWithNeverReturnType(): void
+    {
+        if (PHP_VERSION_ID < 80100) {
+            self::markTestSkipped('Needs PHP 8.1');
+        }
+
+        $reflectionMethod = new MethodReflection(NeverCounter::class, 'increment');
+
+        $method = NullObjectMethodInterceptor::generateMethod($reflectionMethod);
+
+        self::assertSame('increment', $method->getName());
+        self::assertCount(1, $method->getParameters());
+        self::assertSame('throw new \Exception();', $method->getBody());
     }
 }

@@ -9,7 +9,8 @@ use Closure;
 /**
  * Lazy loading object identifier
  *
- * @psalm-template LazilyLoadedObjectType of object
+ * @template LazilyLoadedObjectType of object
+ * @extends ProxyInterface<LazilyLoadedObjectType>
  */
 interface LazyLoadingInterface extends ProxyInterface
 {

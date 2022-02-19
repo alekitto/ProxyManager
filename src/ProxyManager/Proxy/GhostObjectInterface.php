@@ -9,7 +9,8 @@ use Closure;
 /**
  * Ghost object marker
  *
- * @psalm-template LazilyLoadedObjectType of object
+ * @template LazilyLoadedObjectType of object
+ * @extends LazyLoadingInterface<LazilyLoadedObjectType>
  */
 interface GhostObjectInterface extends LazyLoadingInterface
 {

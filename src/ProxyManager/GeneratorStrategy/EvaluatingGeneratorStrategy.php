@@ -38,6 +38,7 @@ class EvaluatingGeneratorStrategy implements GeneratorStrategyInterface
         $code = $classGenerator->generate();
 
         // @codeCoverageIgnoreStart
+        /* @infection-ignore-all */
         if (! $this->canEval) {
             $fileName = __DIR__ . '/EvaluatingGeneratorStrategy.php.tmp';
             FileWriter::writeFile($fileName, "<?php\n" . $code);

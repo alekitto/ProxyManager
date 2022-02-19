@@ -9,7 +9,9 @@ use Closure;
 /**
  * Aggregates AccessInterceptor and ValueHolderInterface, mostly for return type hinting
  *
- * @psalm-template InterceptedObjectType of object
+ * @template InterceptedObjectType of object
+ * @extends AccessInterceptorInterface<InterceptedObjectType>
+ * @extends ValueHolderInterface<InterceptedObjectType>
  */
 interface AccessInterceptorValueHolderInterface extends AccessInterceptorInterface, ValueHolderInterface
 {
